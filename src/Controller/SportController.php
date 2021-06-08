@@ -37,8 +37,9 @@ class SportController extends AbstractController
             return new JsonResponse(['error' => 'true',
                 'message' => $ex->getMessage()]);
         } catch (ExceptionInterface $e) {
-        }  return new JsonResponse(['error' => 'true',
-        'message' => $e->getMessage()]);
+        }
+        return new JsonResponse(['error' => 'true',
+            'message' => $e->getMessage()]);
     }
 
     /**
@@ -63,16 +64,18 @@ class SportController extends AbstractController
                 'message' => $ex->getMessage()]);
         } catch (ExceptionInterface $e) {
             return new JsonResponse(['error' => 'true',
-            'message' => $e->getMessage()]);
+                'message' => $e->getMessage()]);
         }
     }
 
     /**
      * @Route("/sports/{id}", name="sport_show", methods={"GET"})
      */
-    public function show(Request $request, Sport $sport): Response
+    public function show(Request $request, int $id): Response
     {
         try {
+            $entityManager = $this->getDoctrine()->getManager();
+            $sport = $entityManager->getRepository(Sport::class)->find($id);
             return new JsonResponse([
                 'error' => false,
                 'sport' => $sport]);
@@ -85,14 +88,15 @@ class SportController extends AbstractController
     /**
      * @Route("/sports/{id}", name="sport_edit", methods={"POST"})
      */
-    public function edit(Request $request, Sport $sport, SerializerInterface $serializer): Response
+    public function edit(Request $request, int $id, SerializerInterface $serializer): Response
     {
         try {
-
+            $entityManager = $this->getDoctrine()->getManager();
+            $sport = $entityManager->getRepository(Sport::class)->find($id);
             $json = $request->getContent();
             $serializer->deserialize($json, Sport::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $sport]);
-            $this->getDoctrine()->getManager()->flush();
-            $sport=$serializer->normalize($sport);
+            $entityManager->flush();
+            $sport = $serializer->normalize($sport);
 
             return new JsonResponse(['error' => false,
                 'sport' => $sport]);
@@ -109,10 +113,11 @@ class SportController extends AbstractController
     /**
      * @Route("/sports/{id}", name="sport_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Sport $sport): Response
+    public function delete(Request $request, int $id): Response
     {
         try {
             $entityManager = $this->getDoctrine()->getManager();
+            $sport = $entityManager->getRepository(Sport::class)->find($id);
             $entityManager->remove($sport);
             $entityManager->flush();
 
