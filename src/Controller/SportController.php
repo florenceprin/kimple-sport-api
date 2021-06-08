@@ -28,7 +28,7 @@ class SportController extends AbstractController
     {
         if ($token !== $this->getParameter('token')) {
             return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 403);
+                'message' => 'Unauthorized'], '401');
         }
 
 
@@ -41,11 +41,11 @@ class SportController extends AbstractController
                 'sports' => $sports]);
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
-                'message' => $ex->getMessage()]);
+                'message' => $ex->getMessage()], 400);
         } catch (ExceptionInterface $e) {
         }
         return new JsonResponse(['error' => 'true',
-            'message' => $e->getMessage()]);
+            'message' => $e->getMessage()], 400);
     }
 
     /**
@@ -55,7 +55,7 @@ class SportController extends AbstractController
     {
         if ($token !== $this->getParameter('token')) {
             return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 403);
+                'message' => 'Unauthorized'], 401);
         }
 
 
@@ -73,10 +73,10 @@ class SportController extends AbstractController
                 'created' => $sport]);
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
-                'message' => $ex->getMessage()]);
+                'message' => $ex->getMessage()], 400);
         } catch (ExceptionInterface $e) {
             return new JsonResponse(['error' => 'true',
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()], 400);
         }
     }
 
@@ -88,7 +88,7 @@ class SportController extends AbstractController
 
         if ($token !== $this->getParameter('token')) {
             return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 403);
+                'message' => 'Unauthorized'], 401);
         }
 
         try {
@@ -99,7 +99,7 @@ class SportController extends AbstractController
                 'sport' => $sport]);
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
-                'message' => $ex->getMessage()]);
+                'message' => $ex->getMessage()], 400);
         }
     }
 
@@ -110,7 +110,7 @@ class SportController extends AbstractController
     {
         if ($token !== $this->getParameter('token')) {
             return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 403);
+                'message' => 'Unauthorized'], 401);
         }
 
 
@@ -127,10 +127,10 @@ class SportController extends AbstractController
 
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
-                'message' => $ex->getMessage()]);
+                'message' => $ex->getMessage()], 400);
         } catch (ExceptionInterface $e) {
             return new JsonResponse(['error' => 'true',
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()], 400);
         }
     }
 
@@ -142,7 +142,7 @@ class SportController extends AbstractController
 
         if ($token !== $this->getParameter('token')) {
             return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 403);
+                'message' => 'Unauthorized'], 401);
         }
 
         try {
@@ -155,7 +155,7 @@ class SportController extends AbstractController
                 'deleted' => 'true']);
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
-                'message' => $ex->getMessage()]);
+                'message' => $ex->getMessage()], 400);
         }
     }
 }
