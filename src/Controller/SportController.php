@@ -22,10 +22,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SportController extends AbstractController
 {
     /**
-     * @Route("/sports", name="sport_index", methods={"GET"})
+     * @Route("/sports/{token}", name="sports_list", methods={"GET"})
      */
-    public function index(SportRepository $sportRepository, SerializerInterface $serializer): Response
+    public function list(SportRepository $sportRepository, SerializerInterface $serializer, string $token): Response
     {
+        if ($token !== $this->getParameter('token')) {
+            return new JsonResponse(['error' => 'true',
+                'message' => 'Unauthorized'], 403);
+        }
+
+
         try {
 
             $sports = $sportRepository->findAll();
@@ -43,10 +49,16 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/new", name="sport_new", methods={"POST"})
+     * @Route("/sports/new/{token}", name="sport_new", methods={"POST"})
      */
-    public function new(Request $request, SerializerInterface $serializer): Response
+    public function new(Request $request, SerializerInterface $serializer, string $token): Response
     {
+        if ($token !== $this->getParameter('token')) {
+            return new JsonResponse(['error' => 'true',
+                'message' => 'Unauthorized'], 403);
+        }
+
+
         try {
 
             $json = $request->getContent();
@@ -69,10 +81,16 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}", name="sport_show", methods={"GET"})
+     * @Route("/sports/{id}/{token}", name="sport_show", methods={"GET"})
      */
-    public function show(Request $request, int $id): Response
+    public function show(Request $request, int $id, string $token): Response
     {
+
+        if ($token !== $this->getParameter('token')) {
+            return new JsonResponse(['error' => 'true',
+                'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
@@ -86,10 +104,16 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}", name="sport_edit", methods={"POST"})
+     * @Route("/sports/{id}/{token}", name="sport_edit", methods={"POST"})
      */
-    public function edit(Request $request, int $id, SerializerInterface $serializer): Response
+    public function edit(Request $request, int $id, SerializerInterface $serializer, string $token): Response
     {
+        if ($token !== $this->getParameter('token')) {
+            return new JsonResponse(['error' => 'true',
+                'message' => 'Unauthorized'], 403);
+        }
+
+
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
@@ -111,10 +135,16 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}", name="sport_delete", methods={"DELETE"})
+     * @Route("/sports/{id}/{token}", name="sport_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, int $id): Response
+    public function delete(Request $request, int $id, string $token): Response
     {
+
+        if ($token !== $this->getParameter('token')) {
+            return new JsonResponse(['error' => 'true',
+                'message' => 'Unauthorized'], 403);
+        }
+
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
