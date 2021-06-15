@@ -5,6 +5,7 @@ security:
             lexik_jwt: ~
     firewalls:
         main:
+            anonymous: ~
             provider: jwt
 
             # activate different ways to authenticate

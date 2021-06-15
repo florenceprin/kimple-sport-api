@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Sport;
-use App\Form\SportType;
 use App\Repository\SportRepository;
-use Exception;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -157,5 +156,14 @@ class SportController extends AbstractController
             return new JsonResponse(['error' => 'true',
                 'message' => $ex->getMessage()], 400);
         }
+    }
+
+    /**
+     * @Route("/jwt", name="jwt", methods={"GET"})
+     * @throws JWTEncodeFailureException
+     */
+    public function generateToken(JWTEncoderInterface $encoder): JsonResponse
+    {
+        return new JsonResponse(['token' => $encoder->encode(['user'=>'kimple'])]);
     }
 }
