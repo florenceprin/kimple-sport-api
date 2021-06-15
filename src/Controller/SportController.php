@@ -21,16 +21,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SportController extends AbstractController
 {
     /**
-     * @Route("/sports/{token}", name="sports_list", methods={"GET"})
+     * @Route("/sports", name="sports_list", methods={"GET"})
      */
-    public function list(SportRepository $sportRepository, SerializerInterface $serializer, string $token): Response
+    public function list(SportRepository $sportRepository, SerializerInterface $serializer): Response
     {
-        if ($token !== $this->getParameter('token')) {
-            return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], '401');
-        }
-
-
         try {
 
             $sports = $sportRepository->findAll();
@@ -48,15 +42,10 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/new/{token}", name="sport_new", methods={"POST"})
+     * @Route("/sports/new", name="sport_new", methods={"POST"})
      */
-    public function new(Request $request, SerializerInterface $serializer, string $token): Response
+    public function new(Request $request, SerializerInterface $serializer): Response
     {
-        if ($token !== $this->getParameter('token')) {
-            return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 401);
-        }
-
 
         try {
 
@@ -80,16 +69,10 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}/{token}", name="sport_show", methods={"GET"})
+     * @Route("/sports/{id}", name="sport_show", methods={"GET"})
      */
-    public function show(Request $request, int $id, string $token): Response
+    public function show(Request $request, int $id): Response
     {
-
-        if ($token !== $this->getParameter('token')) {
-            return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 401);
-        }
-
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
@@ -103,16 +86,10 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}/{token}", name="sport_edit", methods={"POST"})
+     * @Route("/sports/{id}", name="sport_edit", methods={"POST"})
      */
-    public function edit(Request $request, int $id, SerializerInterface $serializer, string $token): Response
+    public function edit(Request $request, int $id, SerializerInterface $serializer): Response
     {
-        if ($token !== $this->getParameter('token')) {
-            return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 401);
-        }
-
-
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
@@ -134,16 +111,10 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/sports/{id}/{token}", name="sport_delete", methods={"DELETE"})
+     * @Route("/sports/{id}", name="sport_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, int $id, string $token): Response
+    public function delete(Request $request, int $id): Response
     {
-
-        if ($token !== $this->getParameter('token')) {
-            return new JsonResponse(['error' => 'true',
-                'message' => 'Unauthorized'], 401);
-        }
-
         try {
             $entityManager = $this->getDoctrine()->getManager();
             $sport = $entityManager->getRepository(Sport::class)->find($id);
@@ -159,11 +130,11 @@ class SportController extends AbstractController
     }
 
     /**
-     * @Route("/jwt", name="jwt", methods={"GET"})
+     * @Route("/generation/jwt", name="jwt", methods={"GET"})
      * @throws JWTEncodeFailureException
      */
     public function generateToken(JWTEncoderInterface $encoder): JsonResponse
     {
-        return new JsonResponse(['token' => $encoder->encode(['user'=>'kimple'])]);
+        return new JsonResponse(['token' => $encoder->encode(['username' => 'kimple'])]);
     }
 }

@@ -1,18 +1,26 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        jwt:
-            lexik_jwt: ~
+        jwt: # optional, any user provider can be used
+            lexik_jwt:
+                class: App\Security\JWTUser
     firewalls:
-        main:
+        generation:
+            pattern: ^/generation
             anonymous: ~
+        main:
+            pattern: ^/sport
             provider: jwt
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
