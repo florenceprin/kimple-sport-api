@@ -129,12 +129,5 @@ class SportController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/generation/jwt", name="jwt", methods={"GET"})
-     * @throws JWTEncodeFailureException
-     */
-    public function generateToken(JWTEncoderInterface $encoder): JsonResponse
-    {
-        return new JsonResponse(['token' => $encoder->encode(['username' => 'kimple'])]);
-    }
+
 }

@@ -11,6 +11,7 @@ dans un terminal faire les commandes suivantes :
 - php bin/console make:migration
 - php bin/console d:m:m
 - composer install
+- php bin/console doctrine:fixtures:load
 - php bin/console c:c
 et accéder à l'api via l'url localhost:8009
 (port renseigné dans le .env du dossier docker)
@@ -23,6 +24,10 @@ configuration des clefs publiques/privées poles token jwt :
 
 fonctionnement des endpoints de l'api :
 
-pour des raisons de sécurité, veuillez pour chaque endpoint ajouter /{token}
-avec le token présent dans le .env à la place de "{token}"
-afin de pouvoir communiquer à l'api
+1)obtention du token de sécurité :
+connexion à l'endpoint http://localhost:8009/api/login_check
+avec pour json en body :
+{"username":"kimple","password":"password"}
+
+2) pour chacun des autres endpoints de l'api passer 
+le token obtenu en Bearer
