@@ -52,13 +52,18 @@ class SportController extends AbstractController
             $json = $request->getContent();
             $sport = $serializer->deserialize($json, Sport::class, 'json');
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($sport);
-            $entityManager->flush();
-            $sport = $serializer->normalize($sport, 'json');
+            if (preg_match("/^[a-zA-Z]+$/",$sport->getLibelle()) === 1) {
+                $entityManager->persist($sport);
+                $entityManager->flush();
+                $sport = $serializer->normalize($sport, 'json');
 
-            return new JsonResponse([
-                'error' => false,
-                'created' => $sport]);
+                return new JsonResponse([
+                    'error' => false,
+                    'created' => $sport]);
+            } else {
+                return new JsonResponse(['error' => 'true',
+                    'message' => 'mauvaise syntaxe de libelle renseigné'], 400);
+            }
         } catch (\Exception $ex) {
             return new JsonResponse(['error' => 'true',
                 'message' => $ex->getMessage()], 400);
@@ -95,6 +100,18 @@ class SportController extends AbstractController
             $sport = $entityManager->getRepository(Sport::class)->find($id);
             $json = $request->getContent();
             $serializer->deserialize($json, Sport::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $sport]);
+            if (preg_match("/^[a-zA-Z]+$/",$sport->getLibelle()) === 1) {
+                $entityManager->persist($sport);
+                $entityManager->flush();
+                $sport = $serializer->normalize($sport, 'json');
+
+                return new JsonResponse([
+                    'error' => false,
+                    'created' => $sport]);
+            } else {
+                return new JsonResponse(['error' => 'true',
+                    'message' => 'mauvaise syntaxe de libelle renseigné'], 400);
+            }
             $entityManager->flush();
             $sport = $serializer->normalize($sport);
 
