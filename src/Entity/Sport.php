@@ -22,6 +22,17 @@ class Sport
      */
     private $label;
 
+    /**
+     * @ORM\Column(type="boolean",nullable="true")
+     */
+    private $team;
+
+    /**
+     * @ORM\Column(type="integer"),nullable="true",nullable="true")
+     */
+    private $members_number;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,4 +49,43 @@ class Sport
 
         return $this;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getTeam(): ?bool
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param boolean $team
+     * @return Sport
+     */
+    public function setTeam(bool $team): Sport
+    {
+        $this->team = $team;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMembersNumber(): ?int
+    {
+        return $this->members_number;
+    }
+
+    /**
+     * @param int $members_number
+     * @return Sport
+     */
+    public function setMembersNumber(int $members_number): Sport
+    {
+        $this->members_number = $members_number;
+
+        return $this;
+    }
+
+
 }
