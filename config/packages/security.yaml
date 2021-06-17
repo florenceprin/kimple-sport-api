@@ -19,11 +19,7 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        generation:
-            pattern: ^/generation
-            anonymous: ~
         main:
-            pattern: ^/sport
             provider: app_user_provider
             guard:
                 authenticators:
@@ -42,4 +38,4 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/sport,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/sports, roles: ROLE_USER }
