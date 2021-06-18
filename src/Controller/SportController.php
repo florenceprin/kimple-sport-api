@@ -52,7 +52,10 @@ class SportController extends AbstractController
             $json = $request->getContent();
             $sport = $serializer->deserialize($json, Sport::class, 'json');
             $entityManager = $this->getDoctrine()->getManager();
-            if (preg_match("/^[a-zA-Z]+$/",$sport->getLabel()) === 1) {
+            if ($sport->getLabel() === null) {
+                return new JsonResponse(['error' => 'true',
+                    'message' => 'veuillez renseigner un label'], 400);
+            } elseif (preg_match("/^[a-zA-Z]+$/", $sport->getLabel()) === 1) {
                 $entityManager->persist($sport);
                 $entityManager->flush();
                 $sport = $serializer->normalize($sport, 'json');
@@ -100,7 +103,7 @@ class SportController extends AbstractController
             $sport = $entityManager->getRepository(Sport::class)->find($id);
             $json = $request->getContent();
             $serializer->deserialize($json, Sport::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $sport]);
-            if (preg_match("/^[a-zA-Z]+$/",$sport->getLabel()) === 1) {
+            if (preg_match("/^[a-zA-Z]+$/", $sport->getLabel()) === 1) {
                 $entityManager->persist($sport);
                 $entityManager->flush();
                 $sport = $serializer->normalize($sport, 'json');
