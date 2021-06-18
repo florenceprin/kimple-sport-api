@@ -31,3 +31,10 @@ avec pour json en body :
 
 2) pour chacun des autres endpoints de l'api passer 
 le token obtenu en Bearer
+   
+3) exemple de body json à envoyer via l'api :
+   {
+   "label" : "tennis",
+   "team" : true,
+   "members_number" : 16
+   }
